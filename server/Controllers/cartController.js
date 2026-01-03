@@ -16,15 +16,19 @@ export const addToCart = async (req, res) => {
             description: product.description,
             category: product.category,
             price: product.price,
+            discountPercentage: product.discountPercentage,
             rating: product.rating,
             brand: product.brand,
+            stock: product.stock,
+            weight: product.weight,
             warrantyInformation: product.warrantyInformation,
             shippingInformation: product.shippingInformation,
             availabilityStatus: product.availabilityStatus,
             returnPolicy: product.returnPolicy,
             images: product.images,
             thumbnail: product.thumbnail,
-            quantity: 1,
+            quantity: product.quantity || 1,
+            reviews: product.reviews
         };
         if (!cart) {
             cart = await Cart.create({

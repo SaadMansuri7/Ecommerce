@@ -19,8 +19,8 @@ export const ProductCard = ({ product }: { product: Product }) => {
             </div>
 
             <div className="flex items-center justify-between mt-auto">
-                <span className="text-lg font-bold text-blue-600"> ₹{product?.price} </span>
-                <button onClick={() => navigate(`/product/${product?.id}`, { state: { product } })} className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"> View </button>
+                <span className="text-lg font-bold text-gray-900"> ₹{product?.price} </span>
+                <button onClick={() => navigate(`/product/${product?.id}`, { state: { product } })} className="px-3 py-1 text-sm bg-gray-900 text-white rounded hover:bg-white hover:text-black transition-all ease-in-out"> View </button>
             </div>
         </div>
     );

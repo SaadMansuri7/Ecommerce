@@ -3,6 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import { authRouter } from './Routes/authRoutes.js';
 import { cartRouter } from './Routes/cartRoute.js';
+import { wishlistRouter } from './Routes/wishlistRoute.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,6 +16,7 @@ mongoose.connect(mongoUrl).then((req, res) => console.log('connected to mongodb'
 
 app.use('/api/auth', authRouter);
 app.use('/api/cart', cartRouter);
+app.use('/api/wishlist', wishlistRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

@@ -17,16 +17,25 @@ const wishlistSchema = new Schema({
         price: Number,
         rating: Number,
         brand: String,
+        reviews: Array,
+        discountPercentage: Number,
+        stock: Number,
+        weight: Number,
         warrantyInformation: String,
         shippingInformation: String,
         availabilityStatus: String,
         returnPolicy: String,
+        thumbnail: String,
         images: [String],
         quantity: {
             type: Number,
             default: 1
         },
-        thumbnail: String,
+        dimensions: {
+            height: Number,
+            width: Number,
+            depth: Number
+        },
     }],
 }, { timestamps: true });
 

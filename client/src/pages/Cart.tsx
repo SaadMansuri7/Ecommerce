@@ -3,40 +3,69 @@ import { Product } from "./ProductPage";
 import { AuthContext } from "../context/AuthContext";
 import { addToCart, decreaseProductQnt, getCartProducts } from "../services/cartServices";
 import { Heart, TrashIcon } from "lucide-react";
+import { addToWishlist, getWishlistProducts } from "../services/wishlistService";
+import { set } from "mongoose";
+import { SearchBar } from "../components/SearchBar";
 
 export const Cart = () => {
 
     const [cartProducts, setCartProducts] = useState<Product[]>([]);
+    const [wishlistProducts, setWishlistProducts] = useState<Product[]>([]);
     const [total, setTotal] = useState(0);
+    const [isInWishlist, setIsInWishlist] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { token } = useContext(AuthContext);
     let shipping = 100;
 
     async function fetChCartProducts() {
+        setLoading(true);
         let res = await getCartProducts(token);
         console.log('Cart products :', res.data.cart.items);
         setCartProducts(res.data.cart.items);
+        setLoading(false);
+    }
+
+    async function fetChWishlistProducts() {
+        setLoading(true);
+        let res = await getWishlistProducts();
+        console.log('Wishlist products :', res.data.wishlist.items);
+        setWishlistProducts(res.data.wishlist.items);
+        setLoading(false);
     }
 
     useEffect(() => {
         fetChCartProducts();
+        fetChWishlistProducts();
+
+        () => setLoading(false);
     }, []);
 
     useEffect(() => {
         setTotal(cartProducts.reduce((acc, item) => item ? (acc + (item.price * item.quantity)) : acc, 0));
+        () => setLoading(false);
     }, [cartProducts]);
 
     async function handleAddToCart(product: Product, token: string) {
         await addToCart(product, token);
-        fetChCartProducts();
+        await fetChCartProducts();
     }
 
     async function decreaseQnt(productId: number) {
         await decreaseProductQnt(productId, token);
-        fetChCartProducts();
+        await fetChCartProducts();
+    }
+
+    async function handleAddToWishlist(product: Product) {
+        console.log('Adding to wishlist:', product);
+        await addToWishlist(product);
+        await fetChWishlistProducts();
+        const isInWishlistNow = wishlistProducts.some(item => item?.id === product?.id);
+        setIsInWishlist(isInWishlistNow);
     }
 
     return (
         <div className="p-4 items-start justify-start min-h-[80vh]">
+            <SearchBar />
             <div className="mx-auto max-w-7xl">
 
                 <h2 className="mb-6 text-2xl font-semibold text-gray-800 flex items-start justify-start"> Shopping Cart </h2>
@@ -56,7 +85,6 @@ export const Cart = () => {
                         <div className="lg:col-span-2 space-y-4">
                             {cartProducts.map((item: Product) => {
                                 if (!item) return null;
-
                                 return (
                                     <div key={item.id} className="w-full border-b border-gray-200 py-6">
                                         <div className="grid grid-cols-[100px_1fr_120px_120px_120px] gap-6 items-start justify-start">
@@ -85,7 +113,7 @@ export const Cart = () => {
 
                                                 <div className="mt-2 flex space-x-12 text-gray-500">
                                                     <TrashIcon size={16} className="hover:fill-red-600 hover:text-red-600 transition-all duration-300 ease-in-out" />
-                                                    <Heart size={16} className="hover:fill-red-600 hover:text-red-600 transition-all duration-300 ease-in-out" />
+                                                    <Heart onClick={() => handleAddToWishlist(item)} size={16} className={`hover:fill-red-600 hover:text-red-600 transition-all duration-300 ease-in-out ${isInWishlist ? 'fill-red-600 text-red-600' : ''}`} />
                                                 </div>
                                             </div>
 

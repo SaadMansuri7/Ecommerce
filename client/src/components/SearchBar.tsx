@@ -51,7 +51,7 @@ export const SearchBar = () => {
     }
 
     return (
-        <div className="relative flex items-center justify-between px-4 py-3">
+        <div className="relative flex items-center justify-between px-4 py-3 w-7xl mx-auto">
 
             <nav className="flex flex-row space-x-8 items-center">
                 <Link className="text-gray-600 hover:text-gray-900 transition" to="/productPage"> Home </Link>
@@ -60,8 +60,7 @@ export const SearchBar = () => {
             </nav>
 
             <div className="flex items-center gap-4">
-
-                <div className="relative w-90">
+                <div className="relative w-100 justify-end">
                     <div className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 shadow-sm">
                         <Search className="h-5 w-5 text-gray-400" />
 
@@ -120,7 +119,7 @@ export const SearchBar = () => {
 
                 <div
                     onClick={() => setModal(true)}
-                    className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full hover:bg-gray-100 transition">
+                    className="flex h-9 w-9 cursor-pointer items-center justify-end rounded-full hover:bg-gray-100 transition">
                     <UserRoundPenIcon className="h-5 w-5 text-gray-600" />
                 </div>
             </div>

@@ -17,16 +17,23 @@ const cartSchema = new Schema({
         price: Number,
         rating: Number,
         brand: String,
+        weight: Number,
         warrantyInformation: String,
         shippingInformation: String,
         availabilityStatus: String,
         returnPolicy: String,
+        reviews: Array,
+        thumbnail: String,
         images: [String],
+        dimensions: {
+            height: Number,
+            width: Number,
+            depth: Number
+        },
         quantity: {
             type: Number,
             default: 1
         },
-        thumbnail: String,
     }],
 }, { timestamps: true });
 
