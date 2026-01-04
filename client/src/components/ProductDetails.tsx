@@ -6,6 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import { Heart, Star } from "lucide-react";
 import { addToWishlist, getWishlistProducts } from "../services/wishlistService.js";
 import { ProductDetailsShimmer } from "./ProductDetailsShimmer.js";
+import { toast } from 'react-hot-toast';
 
 export const ProductDetails = () => {
     const { state } = useLocation();
@@ -30,6 +31,7 @@ export const ProductDetails = () => {
 
     async function handleAddToCart() {
         await addToCart(product, token);
+        toast.success("Added to cart");
     }
 
     async function handleAddToWishlist(product: Product) {

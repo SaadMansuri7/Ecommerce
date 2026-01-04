@@ -5,6 +5,7 @@ import { getWishlistProducts, removeFromWishlist } from "../services/wishlistSer
 import { Heart, ShoppingBag, Trash2 } from "lucide-react";
 import { WishlistShimmer } from "../components/WishlistShimmer";
 import { SearchBar } from "../components/SearchBar";
+import { toast } from 'react-hot-toast'
 
 export const Wishlist = () => {
     const [wishlist, setWishlist] = useState<Product[]>([]);
@@ -14,11 +15,13 @@ export const Wishlist = () => {
         setLoading(true);
         const res = await getWishlistProducts();
         setWishlist(res.data.wishlist.items);
+        toast.success("Added to Wishlist");
         setLoading(false);
     }
 
     async function handleRemoveWishlist(productId: number) {
         await removeFromWishlist(productId);
+        toast.success("Removed from Wishlist");
         await fetchWishlist();
     }
 
@@ -53,7 +56,7 @@ export const Wishlist = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {wishlist.map((product) => {
                         if (!product) return null;
-                        const   discountedPrice = (product.price - (product.price * product.discountPercentage) / 100).toFixed(2);
+                        const discountedPrice = (product.price - (product.price * product.discountPercentage) / 100).toFixed(2);
                         return (
                             <div key={product.id}
                                 className="group rounded-xl border border-gray-200 bg-white p-4 hover:shadow-md transition">

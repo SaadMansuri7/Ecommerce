@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { addToCart, decreaseProductQnt, getCartProducts } from "../services/cartServices";
 import { Heart, TrashIcon } from "lucide-react";
 import { addToWishlist, getWishlistProducts } from "../services/wishlistService";
-import { set } from "mongoose";
+import { toast } from "react-hot-toast";
 import { SearchBar } from "../components/SearchBar";
 
 export const Cart = () => {
@@ -48,6 +48,7 @@ export const Cart = () => {
     async function handleAddToCart(product: Product, token: string) {
         await addToCart(product, token);
         await fetChCartProducts();
+        toast.success("Added to cart");
     }
 
     async function decreaseQnt(productId: number) {
@@ -61,6 +62,7 @@ export const Cart = () => {
         await fetChWishlistProducts();
         const isInWishlistNow = wishlistProducts.some(item => item?.id === product?.id);
         setIsInWishlist(isInWishlistNow);
+        toast.success("Added to Wishlist");
     }
 
     return (
@@ -69,6 +71,17 @@ export const Cart = () => {
             <div className="mx-auto max-w-7xl">
 
                 <h2 className="mb-6 text-2xl font-semibold text-gray-800 flex items-start justify-start"> Shopping Cart </h2>
+
+                {(!loading && cartProducts.length === 0) && <div>
+                    <div className="flex flex-col items-center justify-center rounded-xl">
+                        <p className="text-lg font-medium text-gray-700">
+                            Cart is empty,
+                        </p>
+                        <p className="mt-2 text-sm text-gray-500">
+                            Looks like you haven't added anything yet.
+                        </p>
+                    </div>
+                </div>}
 
                 {cartProducts.length === 0 ? (
                     <div className="flex flex-col items-center justify-center rounded-xl bg-white p-10 shadow-sm">
